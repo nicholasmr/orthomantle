@@ -49,7 +49,7 @@ def load_state(case,i, path='experiments', skipfields=False):
 
     if not skipfields:
     
-        fabric   = OlivineFabric(meshargs, **kwargs_fabric) # initial state is isotropic, so no need to initialize CPO state vector field
+        fabric   = OlivineFabric(meshargs[0], meshargs[1], **kwargs_fabric) # initial state is isotropic, so no need to initialize CPO state vector field
         rheology = Rheology(meshargs, **kwargs_rheology)
         stokes   = Stokes(meshargs, **kwargs_stokes)
         thermal  = Thermal(meshargs, **kwargs_thermal)

@@ -108,8 +108,8 @@ for case in cases:
         A0 = 100 # use calibration from "Isotropic-Viscoplastic" experiment
 
     kwargs_mesh     = dict(XDIV=XDIV, ZDIV=ZDIV)
-    kwargs_fabric   = dict(L=L, nu_realspace=nu_realspace, nu_multiplier=nu_S2_mult, Cij=OlivineFabric.cij_Abramson1997, rho=OlivineFabric.rho_olivine)    
-    kwargs_rheology = dict(rheology=rheo, n=n_bulk, A0=A0, Enb=Enb, YSTRESS=YSTRESS, ETA_T=ETA_T, ETA0=ETA0)
+    kwargs_fabric   = dict(L=L, nu_realspace=nu_realspace, nu_multiplier=nu_S2_mult, Eij_grain=(1,1,1, 1,1,Enb), Cij=OlivineFabric.cij_Abramson1997, rho=OlivineFabric.rho_olivine)    
+    kwargs_rheology = dict(rheology=rheo, n=n_bulk, A0=A0, YSTRESS=YSTRESS, ETA_T=ETA_T, ETA0=ETA0)
     kwargs_stokes   = dict(RA=RA, friction_coef=2.0/100 if case > 10 else 0) # lid friction law: sigxz = fric_coef * u
     kwargs_thermal  = dict(TS=TS, TB=TB)
 
@@ -119,7 +119,7 @@ for case in cases:
 
     meshargs = unit_mesh(**kwargs_mesh) 
     mesh, boundary_parts, ds, norm = meshargs # unpack
-    fabric   = OlivineFabric(meshargs, **kwargs_fabric) # initial state is isotropic, so no need to initialize CPO state vector field
+    fabric   = OlivineFabric(mesh, boundary_parts, **kwargs_fabric) # initial state is isotropic, so no need to initialize CPO state vector field
     rheology = Rheology(meshargs, **kwargs_rheology)
     stokes   = Stokes(meshargs, **kwargs_stokes)
     thermal  = Thermal(meshargs, **kwargs_thermal)
@@ -168,8 +168,8 @@ for case in cases:
         
         if ENABLE_FABRIC_EVOLUTION:
             info("*** Solving fabric evolution")
-            stokes.rheology.fabric.evolve(stokes.v, dt)
-            stokes.rheology.update_Eij()
+            stokes.rheology.fabric.evolve(stokes.v, dt) # also updates Eij
+#            stokes.rheology.update_Eij()
         else:
             info("*** Skipping fabric evolution")
 

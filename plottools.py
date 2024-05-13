@@ -248,7 +248,7 @@ def plot_diagnostics(u, T, rheology, mesh, t, CASE,i, modelplane='xz', xy0=(0,0)
     """
 
 #    mi, Eij = rheology.mi, rheology.Eij # eigenenhancements
-    xi, Eij = rheology.get_Exixj()
+    xi, Eij = rheology.fabric.xi, rheology.fabric.Exij #rheology.get_Exixj()
     Exx, Ezz, Exz = Eij[0], Eij[2], Eij[4]
     
     ### Exz

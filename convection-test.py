@@ -63,7 +63,7 @@ vgrad = project(grad(v),W)
 
 ### Fabric model
 
-fabric = OlivineFabric((mesh, boundary_parts, ds, norm), L=L, nu_realspace=nu_realspace, nu_multiplier=nu_multiplier, enable_SDM=True, enable_FSE=True)
+fabric = OlivineFabric(mesh, boundary_parts, L=L, nu_realspace=nu_realspace, nu_multiplier=nu_multiplier, enable_SDM=True, enable_FSE=True)
 
 ### Discrete DM and FSE for validation
 

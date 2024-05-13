@@ -12,7 +12,6 @@ import copy, sys, time, code # code.interact(local=locals())
 from dolfin import *
 
 from specfabpy.fenics.rheology import Isotropic, IsotropicPlastic, Orthotropic
-from specfabpy.fenics.enhancementfactor import EnhancementFactor
 
 class Rheology():
 
@@ -41,40 +40,21 @@ class Rheology():
             if self.rheology_name == 'Isotropic-Viscoplastic':   self.rheology = Isotropic(n=self.n)
             if self.rheology_name == 'Orthotropic-Viscoplastic': self.rheology = Orthotropic(n=self.n)           
         
-        ### Grain rheology and homogenization
-
-        self.n_grain   = 1 # Grain power law exponent: only linear grain rheology supported        
-        self.alpha     = 0 # Taylor--Sachs homogenization weight: only stress (Sachs) homogenization supported (alpha=0)
-        
-        # Grain enhancement factors w.r.t. {q1,q2,q3} = {b,n,v} axes.
-        # Set Enb >> 1 to make n--b slip system comparatively soft.
-        self.Eij_grain = (1,1,1, 1,1,Enb) # Voigt order: (Ebb, Enn, Evv, Env, Ebv, Enb)
 
     def set_fabric(self, fabric):
         self.fabric = fabric
         self.L = self.fabric.L # spectral truncation        
-        self.enhancementfactor = EnhancementFactor(self.mesh, self.L, modelplane=self.modelplane)
-        self.update_Eij() # make sure enhancement factor fields are set according to initialized fabric
-
-    def update_Eij(self):
-        self.mi, self.Eij, _ = self.enhancementfactor.Eij_orthotropic(self.fabric.SDM_b.w, self.fabric.SDM_n.w, self.Eij_grain, self.alpha, self.n_grain)
-
-    def get_Exixj(self):
-        x1,x2,x3 = np.eye(3)
-        xi = (x1,x2,x3) # x,y,z unit vectors
-        xi, Exixj, _ = self.enhancementfactor.Eij_orthotropic(self.fabric.SDM_b.w, self.fabric.SDM_n.w, self.Eij_grain, self.alpha, self.n_grain, ei_arg=xi)
-        return (xi, Exixj)
 
     def get_C(self, v):
         # Tensorial part of viscoplastic rheology
         D2 = sym(nabla_grad(v)) # strain-rate tensor (2x2)
-        C2 = self.rheology.C_inv(D2, self.mi, self.Eij, modelplane=self.modelplane)
+        C2 = self.rheology.C_inv(D2, self.fabric.mi, self.fabric.Eij, modelplane=self.modelplane)
         return C2        
 
     def get_eta(self, v, temp):
         # Scalar viscosity of viscoplastic rheology
         D2 = sym(nabla_grad(v)) # strain-rate tensor (2x2)
-        eta_vp = self.rheology.viscosity(D2, self.A0, self.mi, self.Eij, modelplane=self.modelplane)
+        eta_vp = self.rheology.viscosity(D2, self.A0, self.fabric.mi, self.fabric.Eij, modelplane=self.modelplane)
         eta = self.get_eta_harmonicavg(eta_vp, temp)
         return eta
     
