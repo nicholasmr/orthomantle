@@ -1,7 +1,7 @@
 ## Orthotropic viscoplastic mantle convection model
 Orthotropic viscoplastic mantle thermal convection solver for an idealized square cavity 
 
-<img src="https://raw.githubusercontent.com/nicholasmr/orthomantle/main/overview.png" height="320px">
+<img src="https://raw.githubusercontent.com/nicholasmr/orthomantle/main/overview.png?token=GHSAT0AAAAAACPHSIBFGOJ3IPSSBB3XYGVOZSCH45A" height="380px">
 
 | Documentation | Reference |
 | :--- | :--- |
