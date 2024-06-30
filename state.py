@@ -109,7 +109,8 @@ def integral_measures(stokes, thermal, ds, xlen=100):
 
 def Ezz_avg(stokes):
 
-    xi, Eij = stokes.rheology.get_Exixj()
+#    xi, Eij = stokes.rheology.get_Exixj()
+    xi, Eij = stokes.rheology.fabric.xi, stokes.rheology.fabric.Exij
     Exx, Ezz, Exz = Eij[0], Eij[2], Eij[4]
 
     N = 30 # should be a subsampling of mesh resolution to avoid jagged lines because Eij are DG0 elements
