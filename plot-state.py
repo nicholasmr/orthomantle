@@ -21,14 +21,23 @@ def load_and_plot(case, i, annotate=False, fname=None):
     print('time %.3e'%(t))
     plot_diagnostics(stokes.vc, thermal.temp, rheology, mesh, t, case,i, path=EXPPATH, fname=fname, annotate=annotate)
 
+### Requested time step?
+
+if len(sys.argv)==3:
+    case, nt = int(sys.argv[1]), int(sys.argv[2])
+    print('Running for case=%i at nt=%i'%(case, nt))
+    load_and_plot(case, nt, annotate=True)
+
 ### Frames for animation    
+
 if 0:
     dn = 50
     for nt in np.arange(dn, 2200+ 1*dn, 1*dn): load_and_plot(3, nt, annotate=True)
     load_and_plot(3, 5, annotate=True)
 
-### Still frames for paper
-if 1:
+### Selected still frames for paper
+
+if 0:
     nt = 5000 
 #    load_and_plot(1, nt)
 #    load_and_plot(2, nt)

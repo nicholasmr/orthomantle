@@ -87,7 +87,7 @@ def plot_diagnostics(u, T, rheology, mesh, t, CASE,i, modelplane='xz', xy0=(0,0)
     fig = plt.figure(figsize=figsize)
 
     ### Subplot axes
-    gs = gridspec.GridSpec(3, 2, wspace=0.25, hspace=0.29, left=0.07, right=0.82, top=0.968, bottom=0.045)
+    gs = gridspec.GridSpec(3, 2, wspace=0.25, hspace=0.27, left=0.06, right=0.81, top=0.968, bottom=0.045)
     ax1 = fig.add_subplot(gs[0,0])
     ax2 = fig.add_subplot(gs[0,1])
     ax3 = fig.add_subplot(gs[1,0])
@@ -199,17 +199,20 @@ def plot_diagnostics(u, T, rheology, mesh, t, CASE,i, modelplane='xz', xy0=(0,0)
 
     # ODFs
     
-    pos = [(0.5,0.5), (0.5,np.amax(yv_lr))]
-    axpos = [(0.91, 0.855), (0.91, 0.966)]
-    mrk = ['X', 'P']
+    pos = [(0.3,0.95), (0.4,0.8), (0.95, 0.6), (0.6,0.5)]
+    x0, y0 = 0.91, 0.966
+    dy = 0.112
+    axpos = [(x0, y0-ii*dy) for ii in range(4)] #[(x0, y0-0*dy), (x0, y0-1*dy), (x0,y0-2*dy), (x0,y0-3*dy)]
+    mrk = ['X', 's', '^', 'o']
     CPO_plots = [{ 'nlm':cpo_n.get_nlm(x,y), 'blm': cpo_b.get_nlm(x,y), 'loc':(x,y), 'axpos':axpos[ii], 'mrk':mrk[ii] } for ii,(x,y) in enumerate(pos)]
-    mrk_kwargs = dict(markersize=10, markeredgewidth=1.1, markeredgecolor='k', markerfacecolor='w')
+    mrk_kwargs = dict(markersize=10, markeredgewidth=1.1, markeredgecolor='k', markerfacecolor='w', zorder=10)
 
     for CPO in CPO_plots:
     
         W = H = 0.075 # ax width
         x0, y0 = CPO['loc'][0], CPO['loc'][1]
-        points, = ax.plot([x0,],[y0,], CPO['mrk'], **mrk_kwargs)
+        for ax_ in (ax1,ax2,ax3,ax4,ax5,ax6):
+            points, = ax_.plot([x0,],[y0,], CPO['mrk'], **mrk_kwargs)
         trans = CPO['axpos']
         dy = -0.75*H
         dxax = 0.6*W
@@ -234,11 +237,10 @@ def plot_diagnostics(u, T, rheology, mesh, t, CASE,i, modelplane='xz', xy0=(0,0)
 
 
     x0 = 1.1
-    y1, y2 = 0.948, 0.39
-    ax.text(x0, y1, 'CPO at', fontsize=FS)
-    ax.text(x0, y2, 'CPO at', fontsize=FS)
-    ax.plot([x0+0.26,],[y1+0.02,], mrk[1], clip_on=False, **mrk_kwargs)
-    ax.plot([x0+0.26,],[y2+0.02,], mrk[0], clip_on=False, **mrk_kwargs)
+    y1, dy = 0.948, -0.558
+    for ii in range(4):
+        ax.text(x0, y1+ii*dy, 'CPO at', fontsize=FS)
+        ax.plot([x0+0.26,],[y1+0.02+ii*dy,], mrk[ii], clip_on=False, **mrk_kwargs)
 
     sfplt.panellabel(ax, 2, r'\textit{(b)}', **kwargs_panellbl)
 
