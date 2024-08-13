@@ -6,5 +6,4 @@ Orthotropic viscoplastic mantle thermal convection solver for an idealized squar
 | Documentation | Reference |
 | :--- | :--- |
 | Model | [Rathmann et al. (2024)](MISSING) |
-| Examples of use | TBA |
-| Acknowledgements | [Tosi et al. (2015)](https://doi.org/10.1002/2015GC005807) |
+| Builds on | [Tosi et al. (2015)](https://doi.org/10.1002/2015GC005807) |
