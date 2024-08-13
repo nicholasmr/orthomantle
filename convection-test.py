@@ -220,7 +220,7 @@ while nn < Nt:
         # Present CPO position
         CPOpos = (pix,piy) # p_list[-1,:] 
         CPOaxpos = (0.23, +0.01)
-        kwargs_CPOpos = dict(markersize=8, markeredgewidth=1.1, markeredgecolor='k', markerfacecolor='w')
+        kwargs_CPOpos = dict(markersize=10, markeredgewidth=1.1, markeredgecolor='k', markerfacecolor='w')
         points, = ax1.plot(*CPOpos, 'X', **kwargs_CPOpos)
 
         ax1.text(p_list[0,0]-0.04,p_list[0,1]-0.1, '$t=0$', fontsize=FS)
@@ -271,6 +271,7 @@ while nn < Nt:
             ax1.text(0.4, -0.24, 'CPO at', fontsize=FS)
             points, = ax1.plot(0.64, -0.22, 'X', clip_on=False, **kwargs_CPOpos)
         
+            sfplt.panellabel(ax1, 3, r'Discrete parcel model', fontsize=FSLEG, frameon=True)
         
         ### Continuous model
        
@@ -333,6 +334,8 @@ while nn < Nt:
 
             ax2.text(0.4, -0.24, 'CPO at', fontsize=FS)
             points, = ax2.plot(0.64, -0.22, 'P', clip_on=False, **kwargs_CPOpos)
+            
+            sfplt.panellabel(ax2, 3, r'Continuous model (SDM)', fontsize=FSLEG, frameon=True)
 
         ### Save plot
         

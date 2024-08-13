@@ -68,7 +68,8 @@ ETA0    = 1e-3
 ### Stopping criteria
 
 TMAX = 3e-1
-IMAX = 12*1000
+#IMAX = 12*1000
+IMAX = 5500 # seems sufficient for reaching steady state 
 
 ### Numerics
 
@@ -168,8 +169,8 @@ for case in cases:
         
         if ENABLE_FABRIC_EVOLUTION:
             info("*** Solving fabric evolution")
-            stokes.rheology.fabric.evolve(stokes.v, dt) # also updates Eij
-#            stokes.rheology.update_Eij()
+            S = 0*Identity(2) # stress tensor not needed for lattice rotation, but must be provided as argument
+            stokes.rheology.fabric.evolve(stokes.v, S, dt) # also updates Eij
         else:
             info("*** Skipping fabric evolution")
 
